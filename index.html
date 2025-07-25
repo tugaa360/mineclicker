@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Clicker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="game-container">
+        <div id="messageDisplay" class="absolute top-4 left-1/2 -translate-x-1/2 bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg z-20 opacity-0 transition-opacity duration-300"></div>
+
+        <div class="mining-area-top flex flex-col items-center justify-center w-full mb-6">
+            <div id="miningRock" class="mining-rock bg-gray-500 hover:bg-gray-600 active:bg-gray-700">
+                ⛏️
+            </div>
+            <p class="text-lg text-gray-300">タップして原石を採掘</p>
+        </div>
+
+        <div class="resource-display grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
+            <div>
+                <h3 class="text-xl font-semibold mb-2">原石</h3>
+                <p id="oreCount" class="text-3xl font-bold text-yellow-300">0</p>
+                <p class="text-sm text-gray-400">(+<span id="orePerSecond">0</span>/秒)</p>
+                <p class="text-sm text-gray-400">容量: <span id="oreStorageCapacity">0</span></p> </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2">インゴット</h3>
+                <p id="ingotCount" class="text-3xl font-bold text-gray-300">0</p>
+                <p class="text-sm text-gray-400">(+<span id="ingotPerSecond">0</span>/秒)</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2">消費電力</h3>
+                <p id="powerConsumptionDisplay" class="text-3xl font-bold text-red-400">0</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2">発電能力</h3>
+                <p id="powerGenerationDisplay" class="text-3xl font-bold text-green-400">0</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2">研究ポイント</h3>
+                <p id="researchPointCount" class="text-3xl font-bold text-purple-400">0</p>
+                <p class="text-sm text-gray-400">(+<span id="researchPointPerSecond">0</span>/秒)</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2">クレジット</h3>
+                <p id="creditCount" class="text-3xl font-bold text-green-400">0</p>
+                <p class="text-sm text-gray-400">(+<span id="creditsPerSecond">0</span>/秒)</p>
+            </div>
+        </div>
+
+        <div class="production-area flex flex-col items-start gap-6 text-left">
+            <h2 class="text-2xl font-bold mb-4">生産ライン</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mt-8">
+                <div class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold" id="smallDrillTitle">硬いつるはし</h4> <p id="smallDrillCount" class="text-2xl font-bold text-blue-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="smallDrillLevel">1</span></p>
+                </div>
+                <div id="mediumDrillDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold" id="mediumDrillTitle">ドリル</h4>
+                    <p id="mediumDrillCount" class="text-2xl font-bold text-cyan-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="mediumDrillLevel">1</span></p>
+                </div>
+                <div id="largeDrillDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold" id="largeDrillTitle">すごいドリル</h4> <p id="largeDrillCount" class="text-2xl font-bold text-orange-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="largeDrillLevel">1</span></p>
+                </div>
+                <div id="smeltingFurnaceDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">精錬炉</h4>
+                    <p id="smeltingFurnaceCount" class="text-2xl font-bold text-purple-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="smeltingFurnaceLevel">1</span></p>
+                </div>
+                <div id="generatorDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">発電機</h4>
+                    <p id="generatorCount" class="text-2xl font-bold text-red-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="generatorLevel">1</span></p>
+                </div>
+                <div id="researchModuleDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold" id="researchModuleTitle">研究棟</h4> <p id="researchModuleCount" class="text-2xl font-bold text-indigo-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="researchModuleLevel">1</span></p>
+                </div>
+                <div id="smallAutomationDeviceDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">小型自動化装置</h4>
+                    <p id="smallAutomationDeviceCount" class="text-2xl font-bold text-pink-300">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="smallAutomationDeviceLevel">1</span></p>
+                </div>
+                <div id="mediumAutomationDeviceDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">中型自動化装置</h4>
+                    <p id="mediumAutomationDeviceCount" class="text-2xl font-bold text-pink-400">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="mediumAutomationDeviceLevel">1</span></p>
+                </div>
+                <div id="largeAutomationDeviceDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">大型自動化装置</h4>
+                    <p id="largeAutomationDeviceCount" class="text-2xl font-bold text-pink-500">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="largeAutomationDeviceLevel">1</span></p>
+                </div>
+                <div id="warehouseDisplay" class="bg-gray-600 p-4 rounded-lg flex flex-col items-center">
+                    <h4 class="text-xl font-semibold">倉庫</h4>
+                    <p id="warehouseCount" class="text-2xl font-bold text-yellow-500">0</p>
+                    <p class="text-sm text-gray-400">レベル: <span id="warehouseLevel">1</span></p>
+                    <p class="text-sm text-gray-400">容量: <span id="warehouseCapacity">1000</span></p>
+                    <button id="buyWarehouseBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="warehouseCost">400</span> CR</span>
+                    </button>
+                    <button id="upgradeWarehouseBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled style="display:none;">
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="warehouseUpgradeCost">100</span> RP<br>容量: <span id="warehouseNextCapacity">2K</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ゲームデータ管理セクション -->
+            <div class="w-full mt-8">
+                <h2 class="text-2xl font-bold mb-4">ゲームデータ管理</h2>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="saveGameBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">セーブ</button>
+                    <button id="loadGameBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">ロード</button>
+                    <!-- リセットボタンは誤操作を防ぐため目立つ色にします -->
+                    <button id="resetGameBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">リセット</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel flex flex-col gap-4 items-start text-left">
+            <h2 class="text-2xl font-bold mb-4">工場管理</h2>
+
+
+            <div class="flex flex-col gap-2 w-full">
+                <h3 class="text-xl font-semibold mb-2">原石売却</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="sellOre10Btn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        10個
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">獲得: <span id="sellOre10Amount">5</span> CR</span>
+                    </button>
+                    <button id="sellOre50Btn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        50個
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">獲得: <span id="sellOre50Amount">25</span> CR</span>
+                    </button>
+                    <button id="sellOre100Btn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        100個
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">獲得: <span id="sellOre100Amount">50</span> CR</span>
+                    </button>
+                    <button id="sellOre1000Btn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        1000個
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">獲得: <span id="sellOre1000Amount">500</span> CR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2" id="buySmallDrillTitle">硬いつるはし</h3> 
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buySmallDrillBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smallDrillCost">10</span> CR<br>クリックあたり: <span id="smallDrillClickBonus">1</span> 原石</span>
+                    </button>
+                    <button id="upgradeSmallDrillBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0">
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smallDrillUpgradeCost">50</span> RP<br>インゴット: <span id="smallDrillUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2" id="buyMediumDrillTitle">ドリル</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyMediumDrillBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="mediumDrillCost">500</span> CR<br>人件費: <span id="mediumDrillHRMCost">0</span> CR<br>電力消費: 1.0/秒<br>クリックあたり: <span id="mediumDrillClickBonus">3</span> 原石</span>
+                    </button>
+                    <button id="upgradeMediumDrillBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="mediumDrillUpgradeCost">2000</span> RP<br>インゴット: <span id="mediumDrillUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2" id="buyLargeDrillTitle">すごいドリル</h3> <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyLargeDrillBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="largeDrillCost">5000</span> CR<br>インゴット: <span id="largeDrillIngotCost">100</span><br>人件費: <span id="largeDrillHRMCost">0</span> CR<br>電力消費: 2.0/秒<br>クリックあたり: <span id="largeDrillClickBonus">10</span> 原石</span>
+                    </button>
+                    <button id="upgradeLargeDrillBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="largeDrillUpgradeCost">15000</span> RP<br>インゴット: <span id="largeDrillUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">精錬炉</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buySmeltingFurnaceBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smeltingFurnaceCost">100</span> CR<br>電力消費: <span id="smeltingFurnacePowerCost">0</span>/秒</span>
+                    </button>
+                    <button id="upgradeSmeltingFurnaceBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smeltingFurnaceUpgradeCost">200</span> RP<br>インゴット: <span id="smeltingFurnaceUpgradeIngotCost">0</span><br>電力消費 -<span id="smeltingFurnaceConsumptionReduction">0</span>%</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">発電機</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyGeneratorBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="generatorCost">300</span> CR</span>
+                    </button>
+                    <button id="upgradeGeneratorBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="generatorUpgradeCost">1000</span> RP<br>インゴット: <span id="generatorUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2" id="buyResearchModuleTitle">研究棟</h3> <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyResearchModuleBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled aria-label="研究棟購入">
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">
+                            コスト: <span id="researchModuleCost">800</span> CR<br>
+                            電力消費: <span id="researchModulePowerCost">0</span>/秒
+                        </span>
+                    </button>
+                    <button id="upgradeResearchModuleBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled aria-label="研究棟アップグレード">
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">
+                            コスト: <span id="researchModuleUpgradeCost">3000</span> RP<br>
+                            インゴット: <span id="researchModuleUpgradeIngotCost">0</span><br>
+                            電力消費 -<span id="researchModuleConsumptionReduction">0</span>%
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">小型自動化装置</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buySmallAutomationDeviceBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smallAutomationDeviceCost">0</span> CR<br>インゴット: <span id="smallAutomationDeviceIngotCost">0</span><br>電力消費: 0.5/秒<br>生産: クリックあたりx0.5</span>
+                    </button>
+                    <button id="upgradeSmallAutomationDeviceBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="smallAutomationDeviceUpgradeCost">100</span> RP<br>インゴット: <span id="smallAutomationDeviceUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">中型自動化装置</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyMediumAutomationDeviceBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="mediumAutomationDeviceCost">0</span> CR<br>インゴット: <span id="mediumAutomationDeviceIngotCost">0</span><br>電力消費: 1.5/秒<br>生産: クリックあたりx1.0</span>
+                    </button>
+                    <button id="upgradeMediumAutomationDeviceBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="mediumAutomationDeviceUpgradeCost">500</span> RP<br>インゴット: <span id="mediumAutomationDeviceUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">大型自動化装置</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyLargeAutomationDeviceBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="largeAutomationDeviceCost">0</span> CR<br>インゴット: <span id="largeAutomationDeviceIngotCost">0</span><br>電力消費: 3.0/秒<br>生産: クリックあたりx2.0</span>
+                    </button>
+                    <button id="upgradeLargeAutomationDeviceBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="largeAutomationDeviceUpgradeCost">2000</span> RP<br>インゴット: <span id="largeAutomationDeviceUpgradeIngotCost">0</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full mt-4">
+                <h3 class="text-xl font-semibold mb-2">倉庫</h3>
+                <div class="flex flex-wrap justify-start gap-2">
+                    <button id="buyWarehouseBtn" class="button-primary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled>
+                        購入
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="warehouseCost">400</span> CR</span>
+                    </button>
+                    <button id="upgradeWarehouseBtn" class="button-secondary relative flex-1 min-w-[calc(50%-0.25rem)] md:min-w-0" disabled style="display:none;">
+                        アップグレード
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="warehouseUpgradeCost">100</span> RP<br>容量: <span id="warehouseNextCapacity">2K</span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="researchFacilitySection" class="flex flex-col gap-2 mt-4">
+                <h3 class="text-xl font-semibold mb-2">研究施設</h3>
+                <button id="unlockResearchFacilityBtn" class="button-primary relative text-left">
+                    研究施設アンロック
+                    <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="unlockResearchFacilityCost">5000</span> CR</span>
+                </button>
+                <div id="researchOptions" class="flex flex-col gap-2 mt-2" style="display: none;">
+                    <button id="researchDrillEfficiencyBtn" class="button-secondary relative text-left">
+                        ドリル効率改善I
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="researchDrillEfficiencyCost">100</span> RP<br>インゴット: <span id="researchDrillEfficiencyIngotCost">0</span><br>効果: 全ドリル生産速度 +5%</span>
+                    </button>
+                    <button id="researchConstructionCostBtn" class="button-secondary relative text-left">
+                        建設コスト削減I
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="researchConstructionCost">80</span> RP<br>インゴット: <span id="researchConstructionIngotCost">0</span><br>効果: 全装置購入コスト -2%</span>
+                    </button>
+                    <button id="researchAutoSellOreBtn" class="button-secondary relative text-left">
+                        自動原石売却
+                        <span class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2">コスト: <span id="researchAutoSellOreCost">500</span> RP<br>インゴット: <span id="researchAutoSellOreIngotCost">0</span><br>効果: 原石生産量の50%を自動売却</span>
+                    </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
