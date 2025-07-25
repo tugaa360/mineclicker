@@ -1,0 +1,199 @@
+/* css/style.css */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #1a202c;
+  color: #e2e8f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.game-container {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #2d3748;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resource-display,
+.production-area,
+.control-panel {
+  background-color: #4a5568;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.button-primary {
+  background-color: #38a169; /* 緑 */
+  color: #fff;
+  border: none;
+  opacity: 1;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+.button-primary:hover {
+  background-color: #2f855a; /* 濃い緑 */
+}
+.button-primary.disabled {
+  background-color: #a0aec0; /* グレー */
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.button-primary.disabled:hover {
+  background-color: #a0aec0; /* グレー */
+}
+
+.button-secondary {
+  background-color: #4b5563;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  position: relative;
+}
+.button-secondary:hover {
+  background-color: #374151;
+}
+
+.button-disabled {
+  background-color: #a0aec0; /* グレー */
+  color: #fff;
+  border: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-soldout {
+  background-color: #e53e3e; /* 赤 */
+  color: #fff;
+  border: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.button-maxed {
+  background-color: #6b46c1; /* 紫 */
+  color: #fff;
+  border: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.mining-rock {
+  width: 150px;
+  height: 150px;
+  background-color: #a0aec0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s ease-out;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+.mining-rock:active {
+  transform: scale(0.95);
+}
+
+.progress-bar-container {
+  background-color: #2d3748;
+  border-radius: 9999px;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #38a169;
+  height: 100%;
+  width: 0%;
+  border-radius: 9999px;
+  transition: width 0.1s ease-out;
+}
+
+.tooltip {
+  background: #222;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  position: absolute;
+  z-index: 10;
+  white-space: pre-line;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.button-primary:hover .tooltip,
+.button-secondary:hover .tooltip {
+  opacity: 1;
+}
+.button-primary.button-disabled:hover .tooltip,
+.button-secondary.button-disabled:hover .tooltip {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+@media (min-width: 768px) {
+  .game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .resource-display {
+    flex: 1 1 100%;
+  }
+  .production-area {
+    flex: 1 1 45%;
+  }
+  .control-panel {
+    flex: 1 1 45%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 1.5rem;
+  }
+  .mining-area-top {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .resource-display {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    width: 100%;
+  }
+  .production-area {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    align-items: flex-start;
+    text-align: left;
+    height: 100%;
+  }
+  .control-panel {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    align-items: flex-start;
+    text-align: left;
+    height: 100%;
+  }
+}
