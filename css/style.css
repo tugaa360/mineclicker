@@ -1,0 +1,167 @@
+/* 基本的なスタイル */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.game-container {
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .game-container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+    .mining-area-top {
+        grid-column: 1 / 3;
+    }
+    .resource-display {
+        grid-column: 1 / 3;
+    }
+    .production-area {
+        grid-column: 1 / 2;
+    }
+    .control-panel {
+        grid-column: 2 / 3;
+    }
+}
+
+/* ボタンの共通スタイル */
+.button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    color: white;
+    transition: background-color 0.3s, opacity 0.3s, transform 0.1s;
+    position: relative;
+    cursor: pointer;
+    border: none;
+}
+.button:active {
+    transform: scale(0.98);
+}
+
+/* プライマリボタン (購入など) */
+.button-primary {
+    background-color: #38a169; /* 緑 */
+}
+.button-primary:hover {
+    background-color: #2f855a;
+}
+
+/* セカンダリボタン (アップグレードなど) */
+.button-secondary {
+    background-color: #3182ce; /* 青 */
+}
+.button-secondary:hover {
+    background-color: #2b6cb0;
+}
+
+/* 無効状態のボタン */
+.button-disabled {
+    background-color: #a0aec0; /* グレー */
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+.button-disabled:hover {
+    background-color: #a0aec0;
+}
+
+/* 上限に達したボタン */
+.button-maxed {
+    background-color: #6b46c1; /* 紫 */
+    cursor: not-allowed;
+}
+
+/* 売り切れ */
+.button-soldout {
+    background-color: #c53030; /* 赤 */
+    cursor: not-allowed;
+}
+
+
+/* ツールチップ */
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    white-space: pre-line; /* 改行を反映しつつ、連続した空白はまとめる */
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    min-width: 150px; /* 最小幅を確保 */
+    text-align: center;
+}
+
+.button:hover .tooltip {
+    opacity: 1;
+}
+
+
+/* メッセージ表示 */
+.message-display {
+    position: fixed; /* 画面に固定 */
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.message-display.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(10px);
+}
+.message-info {
+    background-color: #3182ce; /* 青 */
+}
+.message-success {
+    background-color: #38a169; /* 緑 */
+}
+.message-error {
+    background-color: #c53030; /* 赤 */
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(-50%) translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-50%) translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(-50%) translateX(5px); }
+}
+
+
+/* 採掘岩 */
+.mining-rock {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s ease-out;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+.mining-rock:active {
+    transform: scale(0.95);
+}
