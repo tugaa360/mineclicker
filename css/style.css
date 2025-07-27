@@ -30,16 +30,33 @@ body {
     }
 }
 
+/* コントロールセクション */
+.control-section {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+
 /* ボタンの共通スタイル */
 .button {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     font-weight: 600;
     color: white;
-    transition: background-color 0.3s, opacity 0.3s, transform 0.1s;
+    transition: background-color 0.2s, opacity 0.2s, transform 0.1s, filter 0.2s;
     position: relative;
     cursor: pointer;
     border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 .button:active {
     transform: scale(0.98);
@@ -63,18 +80,20 @@ body {
 
 /* 無効状態のボタン */
 .button-disabled {
-    background-color: #a0aec0; /* グレー */
-    opacity: 0.7;
+    background-color: #718096; /* グレー */
+    opacity: 0.6;
     cursor: not-allowed;
+    filter: grayscale(50%);
 }
 .button-disabled:hover {
-    background-color: #a0aec0;
+    background-color: #718096;
 }
 
 /* 上限に達したボタン */
 .button-maxed {
-    background-color: #6b46c1; /* 紫 */
-    cursor: not-allowed;
+    background-color: #805ad5; /* 紫 */
+    cursor: default;
+    opacity: 0.8;
 }
 
 /* 売り切れ */
@@ -90,24 +109,37 @@ body {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: 8px;
-    background-color: #2d3748;
+    margin-bottom: 10px; /* 少し離す */
+    background-color: #1a202c; /* 背景を濃く */
     color: #e2e8f0;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 6px;
     font-size: 0.875rem;
-    white-space: pre-line; /* 改行を反映しつつ、連続した空白はまとめる */
-    z-index: 10;
+    font-weight: 400; /* 通常の太さ */
+    white-space: pre-wrap; /* テキストを折り返す */
+    z-index: 20;
     opacity: 0;
+    visibility: hidden; /* 非表示時は完全に消す */
     pointer-events: none;
-    transition: opacity 0.2s ease-in-out;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    min-width: 150px; /* 最小幅を確保 */
-    text-align: center;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    min-width: 200px; /* 最小幅を広げる */
+    text-align: left; /* 左揃え */
+    line-height: 1.5;
 }
 
-.button:hover .tooltip {
+/* ボタンにホバーした時、空でないツールチップを表示 */
+.button:hover .tooltip:not(:empty) {
     opacity: 1;
+    visibility: visible;
+}
+
+.tooltip .cost-item {
+    display: flex;
+    justify-content: space-between;
+}
+.tooltip .cost-item.insufficient {
+    color: #fc8181; /* 赤みがかった色 */
 }
 
 
@@ -159,9 +191,11 @@ body {
     font-size: 3rem;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.1s ease-out;
+    transition: transform 0.1s ease-out, box-shadow 0.2s;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    position: relative; /* ツールチップのため */
 }
 .mining-rock:active {
     transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }

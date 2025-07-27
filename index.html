@@ -15,6 +15,7 @@
         <div class="mining-area-top flex flex-col items-center justify-center w-full mb-6">
             <div id="miningRock" class="mining-rock bg-gray-500 hover:bg-gray-600 active:bg-gray-700">
                 ⛏️
+                <span class="tooltip"></span>
             </div>
             <p class="text-lg text-gray-300">タップして原石を採掘</p>
         </div>
@@ -56,13 +57,12 @@
             <div id="productionGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mt-8">
                 <!-- 生産装置はJSで動的にここに挿入されます -->
             </div>
-             <!-- ゲームデータ管理セクション -->
              <div class="w-full mt-8">
                 <h2 class="text-2xl font-bold mb-4">ゲームデータ管理</h2>
                 <div class="flex flex-wrap justify-start gap-2">
-                    <button id="saveGameBtn" class="button button-primary">セーブ</button>
-                    <button id="loadGameBtn" class="button button-primary">ロード</button>
-                    <button id="resetGameBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">リセット</button>
+                    <button id="saveGameBtn" class="button button-primary">セーブ<span class="tooltip">現在の進行状況を保存します</span></button>
+                    <button id="loadGameBtn" class="button button-primary">ロード<span class="tooltip">最後に保存したデータを読み込みます</span></button>
+                    <button id="resetGameBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">リセット<span class="tooltip">すべてのデータを消去して最初から始めます</span></button>
                 </div>
             </div>
         </div>
@@ -70,101 +70,102 @@
         <div class="control-panel bg-gray-800 p-4 rounded-lg">
             <h2 class="text-2xl font-bold mb-4">工場管理</h2>
 
-            <div class="flex flex-col gap-2 w-full">
+            <div class="control-section">
                 <h3 class="text-xl font-semibold mb-2">原石売却</h3>
-                <div class="flex flex-wrap justify-start gap-2">
-                    <button id="sellOre10Btn" class="button button-primary">10個</button>
-                    <button id="sellOre50Btn" class="button button-primary">50個</button>
-                    <button id="sellOre100Btn" class="button button-primary">100個</button>
-                    <button id="sellOre1000Btn" class="button button-primary">1000個</button>
+                <div class="button-group">
+                    <button id="sellOre10Btn" class="button button-primary">10個<span class="tooltip"></span></button>
+                    <button id="sellOre50Btn" class="button button-primary">50個<span class="tooltip"></span></button>
+                    <button id="sellOre100Btn" class="button button-primary">100個<span class="tooltip"></span></button>
+                    <button id="sellOre1000Btn" class="button button-primary">1000個<span class="tooltip"></span></button>
                 </div>
             </div>
 
             <div id="machineControls" class="flex flex-col gap-4 w-full mt-4">
-                 <!-- 購入・アップグレードボタンはJSで動的にここに挿入されます -->
-                 <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="smallDrill">
                     <h3 class="text-xl font-semibold mb-2">硬いつるはし</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buySmallDrillBtn" class="button button-primary">購入</button>
-                        <button id="upgradeSmallDrillBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buySmallDrillBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeSmallDrillBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="mediumDrill">
                     <h3 class="text-xl font-semibold mb-2">ドリル</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyMediumDrillBtn" class="button button-primary">購入</button>
-                        <button id="upgradeMediumDrillBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyMediumDrillBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeMediumDrillBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="largeDrill">
                     <h3 class="text-xl font-semibold mb-2">すごいドリル</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyLargeDrillBtn" class="button button-primary">購入</button>
-                        <button id="upgradeLargeDrillBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyLargeDrillBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeLargeDrillBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="smeltingFurnace">
                     <h3 class="text-xl font-semibold mb-2">精錬炉</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buySmeltingFurnaceBtn" class="button button-primary">購入</button>
-                        <button id="upgradeSmeltingFurnaceBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buySmeltingFurnaceBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeSmeltingFurnaceBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="generator">
                     <h3 class="text-xl font-semibold mb-2">発電機</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyGeneratorBtn" class="button button-primary">購入</button>
-                        <button id="upgradeGeneratorBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyGeneratorBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeGeneratorBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="researchModule">
                     <h3 class="text-xl font-semibold mb-2">研究棟</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyResearchModuleBtn" class="button button-primary">購入</button>
-                        <button id="upgradeResearchModuleBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyResearchModuleBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeResearchModuleBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="smallAutomationDevice">
                     <h3 class="text-xl font-semibold mb-2">小型自動化装置</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buySmallAutomationDeviceBtn" class="button button-primary">購入</button>
-                        <button id="upgradeSmallAutomationDeviceBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buySmallAutomationDeviceBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeSmallAutomationDeviceBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="mediumAutomationDevice">
                     <h3 class="text-xl font-semibold mb-2">中型自動化装置</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyMediumAutomationDeviceBtn" class="button button-primary">購入</button>
-                        <button id="upgradeMediumAutomationDeviceBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyMediumAutomationDeviceBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeMediumAutomationDeviceBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="largeAutomationDevice">
                     <h3 class="text-xl font-semibold mb-2">大型自動化装置</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyLargeAutomationDeviceBtn" class="button button-primary">購入</button>
-                        <button id="upgradeLargeAutomationDeviceBtn" class="button button-secondary">アップグレード</button>
+                    <div class="button-group">
+                        <button id="buyLargeAutomationDeviceBtn" class="button button-primary">購入<span class="tooltip"></span></button>
+                        <button id="upgradeLargeAutomationDeviceBtn" class="button button-secondary">アップグレード<span class="tooltip"></span></button>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 w-full mt-4">
+                <div class="control-section" data-machine-id="warehouse">
                     <h3 class="text-xl font-semibold mb-2">倉庫</h3>
-                    <div class="flex flex-wrap justify-start gap-2">
-                        <button id="buyWarehouseBtn" class="button button-primary">購入</button>
+                    <div class="button-group">
+                        <button id="buyWarehouseBtn" class="button button-primary">購入<span class="tooltip"></span></button>
                     </div>
                 </div>
             </div>
 
-            <div id="researchFacilitySection" class="flex flex-col gap-2 mt-4">
+            <div id="researchFacilitySection" class="control-section mt-4">
                 <h3 class="text-xl font-semibold mb-2">研究施設</h3>
-                <button id="unlockResearchFacilityBtn" class="button button-primary">研究施設アンロック</button>
+                <div class="button-group">
+                    <button id="unlockResearchFacilityBtn" class="button button-primary">研究施設アンロック<span class="tooltip"></span></button>
+                </div>
                 <div id="researchOptions" class="flex flex-col gap-2 mt-2" style="display: none;">
-                    <button id="researchOverallEfficiencyBtn" class="button button-secondary">全体効率改善</button>
-                    <button id="researchConstructionCostBtn" class="button button-secondary">建設コスト削減</button>
-                    <button id="researchAutoSellOreBtn" class="button button-secondary">自動原石売却</button>
+                    <button id="researchOverallEfficiencyBtn" class="button button-secondary">全体効率改善<span class="tooltip"></span></button>
+                    <button id="researchConstructionCostBtn" class="button button-secondary">建設コスト削減<span class="tooltip"></span></button>
+                    <button id="researchAutoSellOreBtn" class="button button-secondary">自動原石売却<span class="tooltip"></span></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="js/game.js"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
 </html>
