@@ -108,15 +108,17 @@ export function handleBuyMachine(machineId) {
     const machine = state.machines[machineId];
     if (machine.count >= machine.maxCount) {
         showMessage('これ以上購入できません', 'error');
-        return;
+        return false;
     }
     const cost = getMachineCost(machine, state);
     if (checkCanAfford(cost, state.resources)) {
         deductResources(cost, state.resources);
         machine.count++;
         showMessage(`${machine.name} を購入しました`, 'success');
+        return true;
     } else {
         showMessage('リソースが足りません', 'error');
+        return false;
     }
 }
 
@@ -125,15 +127,17 @@ export function handleUpgradeMachine(machineId) {
     const machine = state.machines[machineId];
     if (machine.level >= machine.maxLevel) {
         showMessage('最大レベルです', 'error');
-        return;
+        return false;
     }
     const cost = getMachineUpgradeCost(machine, state);
     if (checkCanAfford(cost, state.resources)) {
         deductResources(cost, state.resources);
         machine.level++;
         showMessage(`${machine.name} をアップグレードしました`, 'success');
+        return true;
     } else {
         showMessage('リソースが足りません', 'error');
+        return false;
     }
 }
 

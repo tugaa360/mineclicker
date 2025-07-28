@@ -71,11 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (machineMatch) {
             const type = machineMatch[1]; // 'buy' or 'upgrade'
             const machineId = lowerFirstLetter(machineMatch[2]);
+            let success = false;
 
             if (type === 'buy') {
-                handleBuyMachine(machineId);
+                success = handleBuyMachine(machineId);
             } else {
-                handleUpgradeMachine(machineId);
+                success = handleUpgradeMachine(machineId);
+            }
+
+            if (success) {
+                // 成功した場合、UIを即時更新
+                const rates = update(0);
+                updateUI(rates);
             }
         }
 

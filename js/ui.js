@@ -47,6 +47,9 @@ export function updateUI(rates) {
     // ボタンの状態更新
     updateAllButtons();
     updateTooltips();
+
+    // 生産ラインの表示更新
+    updateProductionGrid(state);
 }
 
 function updateAllButtons() {
@@ -221,4 +224,39 @@ function translateResource(type) {
 
 export function getUIElements() {
     return ui;
+}
+
+function updateProductionGrid(state) {
+    const { machines } = state;
+    const grid = ui.productionArea.querySelector('#productionGrid');
+    if (!grid) return;
+
+    grid.innerHTML = ''; // グリッドをクリア
+
+    for (const machineId in machines) {
+        const machine = machines[machineId];
+        if (machine.count > 0) {
+            const el = document.createElement('div');
+            el.className = 'production-item bg-gray-700 p-3 rounded-lg flex items-center justify-between cursor-pointer hover:bg-gray-600';
+            el.dataset.machineId = machineId;
+
+            el.innerHTML = `
+                <div>
+                    <h4 class="font-bold text-lg">${machine.name}</h4>
+                    <p class="text-sm text-gray-400">数: ${machine.count} / ${machine.maxCount}</p>
+                    <p class="text-sm text-gray-400">レベル: ${machine.level} / ${machine.maxLevel}</p>
+                </div>
+                <div class="production-status">
+                    <span class="text-2xl">⚙️</span>
+                </div>
+            `;
+
+            el.addEventListener('click', () => {
+                // TODO: 詳細表示などのインタラクションをここに追加
+                showMessage(`${machine.name} が選択されました`, 'info');
+            });
+
+            grid.appendChild(el);
+        }
+    }
 }
